@@ -13,3 +13,6 @@ Route::get('/user', function (Request $request) {
 Route::apiResource('project',ProjectController::class);
 Route::apiResource('task',TaskController::class);
 Route::post('/register',[AouthController::class ,'register']); 
+Route::post('/login',[AouthController::class ,'login']); 
+ 
+ 
