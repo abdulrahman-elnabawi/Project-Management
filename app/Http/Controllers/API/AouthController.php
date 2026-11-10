@@ -15,7 +15,7 @@ class AouthController extends Controller
             'email'=>'required|string|email|unique:users',
             'password'=>'required|string|min:8|'
 
-        ]);
+        ]);    
         if($validator->fails()){
             return response()->json(['message' => $validator->errors()],400);
         }
