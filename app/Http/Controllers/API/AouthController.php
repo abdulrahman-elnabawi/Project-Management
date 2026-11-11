@@ -53,4 +53,11 @@ class AouthController extends Controller
 
        return response()->json(['message'=>'login successfully','user' =>$user,'token'=>$token,200]);
     }
+    public function logout(Request $request){
+        
+        $request->user()->CurrentAccessToken()->delete();
+        return response()->json([
+            'message'=>'Logged out successfully',200
+        ]);
+    }
 } 
