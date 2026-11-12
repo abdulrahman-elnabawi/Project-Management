@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Login() {
       return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -24,7 +26,7 @@ export default function Login() {
                 <a className="text-blue-600 underline" href="#">Forgot Password</a>
             </div>
             <button type="submit" className="w-full mb-3 bg-indigo-500 hover:bg-indigo-600/90 transition py-2.5 rounded text-white font-medium">Log In</button>
-            <p className="text-center mt-4">Don't have an account? <a href="#" className="text-blue-500 underline">Signup</a></p>
+            <p className="text-center mt-4">Don't have an account? <Link to="/Register" className="text-blue-500 underline">Signup</Link></p>
         </form></div>
     );
 }
