@@ -1,13 +1,43 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../axios";
 
 export default function Login() {
     const[email,setEmail]=useState("");
     const[password,setPassword]=useState("");
-    const handleSubmit=(e)=>{
+    const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
+    const handleSubmit=async (e)=>{
         e.preventDefault();
-        console.log("Email:", email);
+        setLoading(true);
+        setMessage("");
+         console.log("Email:", email);
         console.log("Password:", password);
+        try {
+            const response = await api.post('/login', { 
+                email,
+                password
+            });
+          
+              const token = response.data.token;
+              localStorage.setItem('token', token);
+              setMessage(response.data.message);
+              console.log("user" ,response.data.user);
+              console.log("token",token);
+        }
+      
+
+        catch (error) {
+            if(error.response && error.response.data.message){
+                setMessage(error.response.data.message);    
+            }else{
+                setMessage("An error occurred. Please try again.");
+            }
+           
+        } finally {
+                setLoading(false);
+            }
+       
     };
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -43,7 +73,8 @@ export default function Login() {
                 </div>
                 <a className="text-blue-600 underline" href="#">Forgot Password</a>
             </div>
-            <button type="submit" className="w-full mb-3 bg-indigo-500 hover:bg-indigo-600/90 transition py-2.5 rounded text-white font-medium">Log In</button>
+            <button type="submit" className="w-full mb-3 bg-indigo-500 hover:bg-indigo-600/90 transition py-2.5 rounded text-white font-medium">{loading ? "Logging in..." : "Log In"}</button>
+            {message && <p className="text-center text-red-500">{message}</p>}
             <p className="text-center mt-4">Don't have an account? <Link to="/Register" className="text-blue-500 underline">Signup</Link></p>
         </form></div>
     );
