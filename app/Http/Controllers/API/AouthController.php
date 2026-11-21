@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+
 class AouthController extends Controller
 {
     public function register(Request $request){
@@ -16,11 +17,16 @@ class AouthController extends Controller
             'email'=>'required|string|email|unique:users',
             'password'=>'required|string|min:8'
 
-        ]);    
-        if($validator->fails()){
-            return response()->json(['message' => $validator->errors()],400);
-        }
-       $user= User ::create($request->all());
+        ]);  if ($validator->fails()) {
+    return response()->json([
+        'message' => $validator->errors()->first()
+    ], 422);
+}
+      $user = User::create([
+    'name' => $request->name,
+    'email' => $request->email,
+    'password' => Hash::make($request->password),
+]);
        $token =$user->createToken('aouth_token')->plainTextToken; 
        return response()->json(['message'=>'register successfully','user' =>$user,'token'=>$token,201]);
     }
@@ -36,7 +42,7 @@ class AouthController extends Controller
         ]);    
         if($validator->fails()){
 
-            return response()->json(['message' => $validator->errors()],400);
+            return response()->json(['message' => $validator->errors()->first()],422);
 
         }
        $user = user ::where('email',$request->email)->first();
